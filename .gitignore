@@ -9,6 +9,7 @@ __pycache__/
 .Xil/
 build/
 X232/
+xsim.dir/
 *.jou
 *.log
 *.pb
@@ -26,6 +27,9 @@ X232/
 *.bit
 *.ltx
 
+# Vivado DFX runtime and misc tool reports
+dfx_runtime.txt
+
 # Local snapshot/backup content that should not ship as the main source tree
 rtl-20260206T100622Z-1-001/
 
@@ -37,4 +41,3 @@ soc/fpga_top_uart_test.v
 # Compiled software artifacts
 soc/software/*.elf
 soc/software/*.bin
-
