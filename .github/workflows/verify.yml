@@ -1,0 +1,31 @@
+name: RTL Build and Verification
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-compile:
+    name: Verilog Syntax & Compilation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install Toolchain (Icarus Verilog)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y iverilog
+
+    - name: Verify Core Compilation
+      run: |
+        echo "Compiling CPU Core modules..."
+        iverilog -g2012 -o core_check -I core core/alu.v core/control_unit.v core/decode_stage.v core/execute_stage.v core/fetch_stage.v core/hazard_unit.v core/memory_stage.v core/register_file.v core/rv32i_core.v core/writeback_stage.v
+
+    - name: Verify Full SoC Testbench Compilation
+      run: |
+        echo "Compiling full SoC verification testbench..."
+        iverilog -g2012 -o soc_tb_check -I core -I soc -I peripherals -I . rv32i_soc_full_tb.v core/*.v soc/*.v peripherals/*.v

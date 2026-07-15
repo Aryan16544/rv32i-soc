@@ -3,6 +3,7 @@
 [![FPGA](https://img.shields.io/badge/Platform-Xilinx%20Artix--7-orange.svg?style=flat-square)](https://www.xilinx.com/products/silicon-devices/fpga/artix-7.html)
 [![Language](https://img.shields.io/badge/Language-Verilog-blue.svg?style=flat-square)](https://en.wikipedia.org/wiki/Verilog)
 [![Toolchain](https://img.shields.io/badge/Toolchain-Vivado%20%2F%20GCC-darkgreen.svg?style=flat-square)](https://www.xilinx.com/products/design-tools/vivado.html)
+[![CI Build](https://github.com/Aryan16544/rv32i-soc/actions/workflows/verify.yml/badge.svg)](https://github.com/Aryan16544/rv32i-soc/actions/workflows/verify.yml)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 A high-performance, compact **RV32I RISC-V System-on-Chip (SoC)** implemented in synthesizable Verilog. Optimized for AMD/Xilinx 7-Series FPGAs (specifically targetting the Artix-7 device), this SoC features a custom 5-stage pipelined CPU core, hazard detection/resolution, an AXI-Lite style interconnect, standard system peripherals, and a dedicated browser-based web compilation IDE.
