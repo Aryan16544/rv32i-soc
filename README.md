@@ -123,6 +123,9 @@ Peripherals and memories are mapped directly into a single 32-bit physical addre
 
 ## 🚀 Quick Start
 
+> [!TIP]
+> For a detailed walkthrough of the software and hardware compiler workflows, read the **[Getting Started Guide](docs/getting-started.md)**.
+
 ### 1. Build and Compile C Code
 The bare-metal software utilizes the standard `riscv64-unknown-elf` toolchain to compile code into `.mem` initialization files:
 
