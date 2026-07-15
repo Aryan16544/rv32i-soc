@@ -37,6 +37,8 @@ module soc_axi_adapter (
     reg aw_captured, w_captured;
     reg [31:0] latched_addr;
     reg [31:0] latched_wdata;
+    reg [31:0] rdata_reg;
+    assign s_rdata = rdata_reg;
     
     // Handshake assignments
     assign s_awready = (state == S_IDLE) && !aw_captured;

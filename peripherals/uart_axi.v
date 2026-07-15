@@ -108,12 +108,11 @@ module uart_axi #(
     reg w_captured;
     reg [31:0] latched_awaddr;
     reg [31:0] latched_wdata;
+    reg bvalid_reg;
 
     assign s_axi_awready = !aw_captured && !bvalid_reg;
     assign s_axi_wready = !w_captured && !bvalid_reg;
     assign s_axi_bresp = 2'b00;
-
-    reg bvalid_reg;
     assign s_axi_bvalid = bvalid_reg;
 
     wire write_trigger = (aw_captured || s_axi_awvalid) &&
