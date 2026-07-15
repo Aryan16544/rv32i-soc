@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RV32I SoC IDE — C to HEX Compiler</title>
+  <meta name="description" content="Browser-based C to HEX compiler for RV32I RISC-V SoC with GNU Toolchain, peripheral address map, and live disassembly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════  TOPBAR  ═══════════════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="6" fill="url(#logoGrad)"/>
+        <path d="M7 14L12 9L17 14L12 19L7 14Z" fill="white" opacity="0.9"/>
+        <path d="M14 14L19 9L21 11L16 16L14 14Z" fill="white" opacity="0.6"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="logo-text">RV32I SoC <span class="logo-accent">IDE</span></span>
+    </div>
+    <nav class="top-nav">
+      <button class="nav-btn active" id="btn-editor" onclick="switchView('editor')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Editor
+      </button>
+      <button class="nav-btn" id="btn-map" onclick="switchView('map')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+        Memory Map
+      </button>
+      <button class="nav-btn" id="btn-hex" onclick="switchView('hex')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        HEX Output
+      </button>
+      <button class="nav-btn" id="btn-asm" onclick="switchView('asm')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+        Disassembly
+      </button>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <div id="toolchain-badge" class="badge badge-loading">
+      <span class="badge-dot"></span>
+      <span id="toolchain-text">Checking toolchain…</span>
+    </div>
+    <div class="compiler-options">
+      <select id="sel-arch" title="Architecture">
+        <option value="rv32i" selected>rv32i</option>
+        <option value="rv32im">rv32im</option>
+        <option value="rv32imc">rv32imc</option>
+      </select>
+      <select id="sel-opt" title="Optimization">
+        <option value="O0" selected>-O0 (None)</option>
+        <option value="O1">-O1</option>
+        <option value="O2">-O2</option>
+        <option value="Os">-Os (Size)</option>
+      </select>
+    </div>
+    <button class="btn-compile" id="btn-compile" onclick="compile()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Compile &amp; Convert
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════  MAIN LAYOUT  ═══════════════════════ -->
+<main class="main-layout">
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Examples</div>
+      <div id="examples-list" class="examples-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Peripheral Map</div>
+      <div class="periph-map">
+        <div class="periph-item" onclick="insertPeripheral('BOOT_ROM')">
+          <div class="periph-addr">0x0000_0000</div>
+          <div class="periph-name">Boot ROM</div>
+          <div class="periph-size">4 KB</div>
+        </div>
+        <div class="periph-item" onclick="insertPeripheral('MAIN_RAM')">
+          <div class="periph-addr">0x1000_0000</div>
+          <div class="periph-name">Main RAM</div>
+          <div class="periph-size">64 KB</div>
+        </div>
+        <div class="periph-item gpio" onclick="insertPeripheral('GPIO')">
+          <div class="periph-addr">0x2000_0000</div>
+          <div class="periph-name">⚡ GPIO</div>
+          <div class="periph-size">4 KB</div>
+        </div>
+        <div class="periph-item uart" onclick="insertPeripheral('UART')">
+          <div class="periph-addr">0x3000_0000</div>
+          <div class="periph-name">📡 UART</div>
+          <div class="periph-size">4 KB</div>
+        </div>
+        <div class="periph-item timer" onclick="insertPeripheral('TIMER')">
+          <div class="periph-addr">0x4000_0000</div>
+          <div class="periph-name">⏱ Timer</div>
+          <div class="periph-size">4 KB</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Actions</div>
+      <button class="sidebar-btn" onclick="saveFile()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save to Project
+      </button>
+      <button class="sidebar-btn" onclick="downloadHex()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download .mem
+      </button>
+      <button class="sidebar-btn" onclick="downloadDisasm()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download .asm
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Build Info</div>
+      <div id="build-stats" class="build-stats">
+        <div class="stat-row"><span>Status</span><span id="stat-status" class="stat-val">—</span></div>
+        <div class="stat-row"><span>Words</span><span id="stat-words" class="stat-val">—</span></div>
+        <div class="stat-row"><span>Bytes</span><span id="stat-bytes" class="stat-val">—</span></div>
+        <div class="stat-row"><span>Arch</span><span id="stat-arch" class="stat-val">—</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── VIEWS CONTAINER ── -->
+  <div class="views-container">
+
+    <!-- Editor View -->
+    <div id="view-editor" class="view active">
+      <div class="editor-header">
+        <div class="editor-tabs">
+          <div class="editor-tab active">main.c</div>
+          <div class="editor-tab" onclick="toggleStartS()">start.S</div>
+        </div>
+        <div class="editor-actions">
+          <button class="icon-btn" onclick="formatCode()" title="Format">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+          </button>
+          <button class="icon-btn" onclick="clearEditor()" title="Clear">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="editor-body" id="editor-body">
+        <div class="line-numbers" id="line-numbers"></div>
+        <textarea id="code-editor" class="code-area" spellcheck="false"
+          placeholder="// Write your C code here…
+// Click a peripheral on the left to insert its address macros."
+          oninput="onEditorInput()" onkeydown="handleEditorKey(event)" onscroll="syncScroll()"></textarea>
+      </div>
+      <!-- start.S panel (collapsed by default) -->
+      <div id="start-panel" class="start-panel hidden">
+        <div class="start-panel-header">start.S (Startup Assembly)</div>
+        <textarea id="start-editor" class="code-area" spellcheck="false">.section .text.init
+.global _start
+_start:
+    lui sp, 0x10010
+    call main
+loop:
+    j loop
+</textarea>
+      </div>
+      <!-- Compile log -->
+      <div id="compile-log" class="compile-log hidden">
+        <div class="log-header">
+          <span id="log-title">Build Log</span>
+          <button class="log-close" onclick="closeLog()">✕</button>
+        </div>
+        <pre id="log-content"></pre>
+      </div>
+    </div>
+
+    <!-- Memory Map View -->
+    <div id="view-map" class="view">
+      <div class="view-header">
+        <h2>RV32I SoC Memory Map</h2>
+        <p>Address space layout for your RISC-V SoC design</p>
+      </div>
+      <div class="memmap-container">
+        <div class="memmap-visual">
+          <div class="addr-bar-title">32-bit Address Space</div>
+          <div class="addr-bar">
+            <div class="seg seg-boot" style="height:4%">
+              <span class="seg-label">Boot ROM<br/>0x0000_0000</span>
+            </div>
+            <div class="seg seg-gap" style="height:20%">
+              <span class="seg-label seg-gray">Reserved</span>
+            </div>
+            <div class="seg seg-ram" style="height:16%">
+              <span class="seg-label">Main RAM<br/>0x1000_0000</span>
+            </div>
+            <div class="seg seg-gap" style="height:13%">
+              <span class="seg-label seg-gray">Reserved</span>
+            </div>
+            <div class="seg seg-gpio" style="height:6%">
+              <span class="seg-label">GPIO<br/>0x2000_0000</span>
+            </div>
+            <div class="seg seg-gap" style="height:13%">
+              <span class="seg-label seg-gray">Reserved</span>
+            </div>
+            <div class="seg seg-uart" style="height:6%">
+              <span class="seg-label">UART<br/>0x3000_0000</span>
+            </div>
+            <div class="seg seg-gap" style="height:13%">
+              <span class="seg-label seg-gray">Reserved</span>
+            </div>
+            <div class="seg seg-timer" style="height:6%">
+              <span class="seg-label">Timer<br/>0x4000_0000</span>
+            </div>
+            <div class="seg seg-gap" style="height:3%">
+              <span class="seg-label seg-gray">…</span>
+            </div>
+          </div>
+        </div>
+        <div class="memmap-table-wrap">
+          <table class="memmap-table">
+            <thead>
+              <tr><th>Region</th><th>Base Address</th><th>Size</th><th>Access</th><th>C Macro</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-rom">
+                <td><span class="dot dot-boot"></span>Boot ROM / IMEM</td>
+                <td><code>0x0000_0000</code></td>
+                <td>4 KB</td>
+                <td>R-X</td>
+                <td><code>BOOT_ROM_BASE</code></td>
+              </tr>
+              <tr class="row-ram">
+                <td><span class="dot dot-ram"></span>Main RAM / DMEM</td>
+                <td><code>0x1000_0000</code></td>
+                <td>64 KB</td>
+                <td>RWX</td>
+                <td><code>MAIN_RAM_BASE</code></td>
+              </tr>
+              <tr class="row-gpio">
+                <td><span class="dot dot-gpio"></span>GPIO</td>
+                <td><code>0x2000_0000</code></td>
+                <td>4 KB</td>
+                <td>R/W</td>
+                <td><code>GPIO_BASE</code></td>
+              </tr>
+              <tr class="row-uart">
+                <td><span class="dot dot-uart"></span>UART</td>
+                <td><code>0x3000_0000</code></td>
+                <td>4 KB</td>
+                <td>R/W</td>
+                <td><code>UART_BASE</code></td>
+              </tr>
+              <tr class="row-timer">
+                <td><span class="dot dot-timer"></span>Timer</td>
+                <td><code>0x4000_0000</code></td>
+                <td>4 KB</td>
+                <td>R/W</td>
+                <td><code>TIMER_BASE</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:2rem;color:#a5b4fc">GPIO Register Map (0x2000_0000)</h3>
+          <table class="memmap-table">
+            <thead><tr><th>Offset</th><th>Register</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>+0x00</code></td><td><code>GPIO_IN</code></td><td>Read -> Switch inputs (16-bit)</td></tr>
+              <tr><td><code>+0x04</code></td><td><code>GPIO_OUT</code></td><td>Write -> LED outputs (16-bit)</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:2rem;color:#a5b4fc">UART Register Map (0x3000_0000)</h3>
+          <table class="memmap-table">
+            <thead><tr><th>Offset</th><th>Register</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>+0x00</code></td><td><code>UART_TX</code></td><td>Write → Transmit byte</td></tr>
+              <tr><td><code>+0x04</code></td><td><code>UART_RX</code></td><td>Read → Received byte</td></tr>
+              <tr><td><code>+0x08</code></td><td><code>UART_STAT</code></td><td>Bit[0]=RX_VALID, Bit[1]=TX_FULL</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:2rem;color:#a5b4fc">Timer Register Map (0x4000_0000)</h3>
+          <table class="memmap-table">
+            <thead><tr><th>Offset</th><th>Register</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>+0x00</code></td><td><code>MTIME_LO</code></td><td>Lower 32 bits of the free-running timer</td></tr>
+              <tr><td><code>+0x04</code></td><td><code>MTIME_HI</code></td><td>Upper 32 bits of the free-running timer</td></tr>
+              <tr><td><code>+0x08</code></td><td><code>MTIMECMP_LO</code></td><td>Lower 32 bits of compare register</td></tr>
+              <tr><td><code>+0x0C</code></td><td><code>MTIMECMP_HI</code></td><td>Upper 32 bits of compare register</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:2rem;color:#a5b4fc">Linker Script Memory Layout</h3>
+          <table class="memmap-table">
+            <thead><tr><th>Section</th><th>Location</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>.text</code></td><td>ROM @ 0x00000000</td><td>Code (starts at _start)</td></tr>
+              <tr><td><code>.rodata</code></td><td>ROM</td><td>Read-only constants</td></tr>
+              <tr><td><code>.data</code></td><td>RAM @ 0x10000000</td><td>Initialized global variables</td></tr>
+              <tr><td><code>.bss</code></td><td>RAM</td><td>Uninitialized globals (zeroed)</td></tr>
+              <tr><td>Stack</td><td>RAM top @ 0x10010000</td><td>Grows downward</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEX Output View -->
+    <div id="view-hex" class="view">
+      <div class="view-header">
+        <h2>HEX / .mem Output</h2>
+        <p>32-bit little-endian words for Verilog <code>$readmemh</code></p>
+        <div class="hex-controls">
+          <label><input type="checkbox" id="chk-show-bin" onchange="renderHexTable()"> Show Binary</label>
+          <label><input type="checkbox" id="chk-show-addr" checked onchange="renderHexTable()"> Show Address</label>
+          <input type="text" id="hex-search" placeholder="Search address or hex…" oninput="filterHexTable()" />
+        </div>
+      </div>
+      <div id="hex-no-data" class="empty-state">
+        <div class="empty-icon">⚙️</div>
+        <div>Compile your C code first to see the HEX output</div>
+      </div>
+      <div id="hex-output-wrap" class="hidden">
+        <div class="hex-raw-wrap">
+          <div class="hex-raw-title">Raw .mem file (for $readmemh)</div>
+          <textarea id="hex-raw" class="hex-raw" readonly></textarea>
+        </div>
+        <div class="hex-table-wrap">
+          <table class="hex-table" id="hex-table">
+            <thead>
+              <tr id="hex-thead"><th>Word#</th><th>Address</th><th>HEX</th></tr>
+            </thead>
+            <tbody id="hex-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disassembly View -->
+    <div id="view-asm" class="view">
+      <div class="view-header">
+        <h2>Disassembly</h2>
+        <p>RISC-V RV32I instruction disassembly from objdump</p>
+        <input type="text" id="asm-search" placeholder="Search instruction, address, or symbol…" oninput="filterAsm()" />
+      </div>
+      <div id="asm-no-data" class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div>Compile your C code first to see the disassembly</div>
+      </div>
+      <pre id="asm-output" class="asm-output hidden"></pre>
+    </div>
+
+  </div><!-- end views-container -->
+</main>
+
+<!-- ═══════════════════════  TOAST  ═══════════════════════ -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- ═══════════════════════  LOADING OVERLAY  ═══════════════════════ -->
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loading-text">Compiling…</div>
+    <div class="loading-steps">
+      <div class="step" id="step1">
+        <span class="step-icon">⟳</span>
+        <span>gcc: Compiling C → ELF</span>
+      </div>
+      <div class="step" id="step2">
+        <span class="step-icon">⟳</span>
+        <span>objcopy: ELF → Binary</span>
+      </div>
+      <div class="step" id="step3">
+        <span class="step-icon">⟳</span>
+        <span>make_hex.py: Binary → .mem</span>
+      </div>
+      <div class="step" id="step4">
+        <span class="step-icon">⟳</span>
+        <span>objdump: Disassembly</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

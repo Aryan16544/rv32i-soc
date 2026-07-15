@@ -1,0 +1,421 @@
+// RV32I Comprehensive Test Program (auto-generated)
+// 417 instructions, 60 test results to DMEM
+// Results at DMEM base 0x10000000, offset = test_num * 4
+
+00500093  // [000] x1 = 5
+fff00113  // [004] x2 = 0xFFFFFFFF (-1)
+00a00193  // [008] x3 = 10
+10000237  // [00C] x4 = 0x10000000 (DMEM base)
+800002b7  // [010] x5 = 0x80000000 (INT_MIN)
+00000013  // [014] pipeline settle
+00000013  // [018] pipeline settle
+00000013  // [01C] pipeline settle
+00308333  // [020] T0: ADD  x6 = 5+10 = 15
+00000013  // [024]   nop (settle)
+00622023  // [028]   -> DMEM[0]
+00000013  // [02C] --- test separator ---
+00000013  // [030] --- test separator ---
+40118333  // [034] T1: SUB  x6 = 10-5 = 5
+00000013  // [038]   nop (settle)
+00622223  // [03C]   -> DMEM[1]
+00000013  // [040] --- test separator ---
+00000013  // [044] --- test separator ---
+00309333  // [048] T2: SLL  x6 = 5<<10 = 5120
+00000013  // [04C]   nop (settle)
+00622423  // [050]   -> DMEM[2]
+00000013  // [054] --- test separator ---
+00000013  // [058] --- test separator ---
+00112333  // [05C] T3: SLT  x6 = (-1<5)s = 1
+00000013  // [060]   nop (settle)
+00622623  // [064]   -> DMEM[3]
+00000013  // [068] --- test separator ---
+00000013  // [06C] --- test separator ---
+0020b333  // [070] T4: SLTU x6 = (5<MAX)u = 1
+00000013  // [074]   nop (settle)
+00622823  // [078]   -> DMEM[4]
+00000013  // [07C] --- test separator ---
+00000013  // [080] --- test separator ---
+0030c333  // [084] T5: XOR  x6 = 5^10 = 15
+00000013  // [088]   nop (settle)
+00622a23  // [08C]   -> DMEM[5]
+00000013  // [090] --- test separator ---
+00000013  // [094] --- test separator ---
+00115333  // [098] T6: SRL  x6 = 0xFFFFFFFF>>>5 = 0x07FFFFFF
+00000013  // [09C]   nop (settle)
+00622c23  // [0A0]   -> DMEM[6]
+00000013  // [0A4] --- test separator ---
+00000013  // [0A8] --- test separator ---
+40115333  // [0AC] T7: SRA  x6 = -1>>a5 = 0xFFFFFFFF
+00000013  // [0B0]   nop (settle)
+00622e23  // [0B4]   -> DMEM[7]
+00000013  // [0B8] --- test separator ---
+00000013  // [0BC] --- test separator ---
+0030e333  // [0C0] T8: OR   x6 = 5|10 = 15
+00000013  // [0C4]   nop (settle)
+02622023  // [0C8]   -> DMEM[8]
+00000013  // [0CC] --- test separator ---
+00000013  // [0D0] --- test separator ---
+0030f333  // [0D4] T9: AND  x6 = 5&10 = 0
+00000013  // [0D8]   nop (settle)
+02622223  // [0DC]   -> DMEM[9]
+00000013  // [0E0] --- test separator ---
+00000013  // [0E4] --- test separator ---
+7ff08313  // [0E8] T10: ADDI x6 = 5+2047 = 2052
+00000013  // [0EC]   nop (settle)
+02622423  // [0F0]   -> DMEM[10]
+00000013  // [0F4] --- test separator ---
+00000013  // [0F8] --- test separator ---
+80000313  // [0FC] T11: ADDI x6 = -2048 = 0xFFFFF800
+00000013  // [100]   nop (settle)
+02622623  // [104]   -> DMEM[11]
+00000013  // [108] --- test separator ---
+00000013  // [10C] --- test separator ---
+00512313  // [110] T12: SLTI x6 = (-1<5)s = 1
+00000013  // [114]   nop (settle)
+02622823  // [118]   -> DMEM[12]
+00000013  // [11C] --- test separator ---
+00000013  // [120] --- test separator ---
+fff0b313  // [124] T13: SLTIU x6 = (5<MAX)u = 1
+00000013  // [128]   nop (settle)
+02622a23  // [12C]   -> DMEM[13]
+00000013  // [130] --- test separator ---
+00000013  // [134] --- test separator ---
+fff0c313  // [138] T14: XORI x6 = 5^-1 = 0xFFFFFFFA
+00000013  // [13C]   nop (settle)
+02622c23  // [140]   -> DMEM[14]
+00000013  // [144] --- test separator ---
+00000013  // [148] --- test separator ---
+0f00e313  // [14C] T15: ORI  x6 = 5|0xF0 = 0xF5
+00000013  // [150]   nop (settle)
+02622e23  // [154]   -> DMEM[15]
+00000013  // [158] --- test separator ---
+00000013  // [15C] --- test separator ---
+0ff17313  // [160] T16: ANDI x6 = -1&0xFF = 0xFF
+00000013  // [164]   nop (settle)
+04622023  // [168]   -> DMEM[16]
+00000013  // [16C] --- test separator ---
+00000013  // [170] --- test separator ---
+00309313  // [174] T17: SLLI x6 = 5<<3 = 40
+00000013  // [178]   nop (settle)
+04622223  // [17C]   -> DMEM[17]
+00000013  // [180] --- test separator ---
+00000013  // [184] --- test separator ---
+01c15313  // [188] T18: SRLI x6 = 0xFFFFFFFF>>>28 = 0xF
+00000013  // [18C]   nop (settle)
+04622423  // [190]   -> DMEM[18]
+00000013  // [194] --- test separator ---
+00000013  // [198] --- test separator ---
+4102d313  // [19C] T19: SRAI x6 = 0x80000000>>a16 = 0xFFFF8000
+00000013  // [1A0]   nop (settle)
+04622623  // [1A4]   -> DMEM[19]
+00000013  // [1A8] --- test separator ---
+00000013  // [1AC] --- test separator ---
+deadb337  // [1B0] T20: LUI  x6 = 0xDEADB000
+00000013  // [1B4]   nop (settle)
+04622823  // [1B8]   -> DMEM[20]
+00000013  // [1BC] --- test separator ---
+00000013  // [1C0] --- test separator ---
+00001317  // [1C4] T21: AUIPC x6 = 0x1C4+0x1000
+00000013  // [1C8]   nop (settle)
+04622a23  // [1CC]   -> DMEM[21]
+00000013  // [1D0] --- test separator ---
+00000013  // [1D4] --- test separator ---
+05a00393  // [1D8] x7 = 0x5A (test data)
+faa00413  // [1DC] x8 = 0xFFFFFFAA (-86)
+00000013  // [1E0] settle
+00000013  // [1E4] settle
+10722023  // [1E8] DMEM[256] = 0x0000005A (SW test)
+10222223  // [1EC] DMEM[260] = 0xFFFFFFFF (SW test)
+10321423  // [1F0] DMEM[264] = 0x000A (SH test)
+10820623  // [1F4] DMEM[268] = 0xAA (SB test)
+00000013  // [1F8] pipeline settle for stores
+00000013  // [1FC] pipeline settle for stores
+00000013  // [200] pipeline settle for stores
+10022303  // [204] T22: LW  x6 = MEM[256] = 0x5A
+00000013  // [208] load-use gap
+00000013  // [20C]   nop (settle)
+04622c23  // [210]   -> DMEM[22]
+00000013  // [214] --- test separator ---
+00000013  // [218] --- test separator ---
+10421303  // [21C] T23: LH  x6 = sext(0xFFFF) = 0xFFFFFFFF
+00000013  // [220] load-use gap
+00000013  // [224]   nop (settle)
+04622e23  // [228]   -> DMEM[23]
+00000013  // [22C] --- test separator ---
+00000013  // [230] --- test separator ---
+10c20303  // [234] T24: LB  x6 = sext(0xAA) = 0xFFFFFFAA
+00000013  // [238] load-use gap
+00000013  // [23C]   nop (settle)
+06622023  // [240]   -> DMEM[24]
+00000013  // [244] --- test separator ---
+00000013  // [248] --- test separator ---
+10425303  // [24C] T25: LHU x6 = zext(0xFFFF) = 0x0000FFFF
+00000013  // [250] load-use gap
+00000013  // [254]   nop (settle)
+06622223  // [258]   -> DMEM[25]
+00000013  // [25C] --- test separator ---
+00000013  // [260] --- test separator ---
+10c24303  // [264] T26: LBU x6 = zext(0xAA) = 0x000000AA
+00000013  // [268] load-use gap
+00000013  // [26C]   nop (settle)
+06622423  // [270]   -> DMEM[26]
+00000013  // [274] --- test separator ---
+00000013  // [278] --- test separator ---
+00000313  // [27C] T27: BEQ taken setup
+00108463  // [280]   BEQ x1,x1,+8 (taken)
+fff00313  // [284]   SKIPPED if taken
+00130313  // [288]   x6 = 0+1 = 1
+00000013  // [28C]   nop (settle)
+06622623  // [290]   -> DMEM[27]
+00000013  // [294] --- test separator ---
+00000013  // [298] --- test separator ---
+00000313  // [29C] T28: BEQ not-taken setup
+00308463  // [2A0]   BEQ x1,x3,+8 (NOT taken, 5!=10)
+00100313  // [2A4]   EXECUTED: x6=1
+00000013  // [2A8]   fall-through
+00000013  // [2AC]   nop (settle)
+06622823  // [2B0]   -> DMEM[28]
+00000013  // [2B4] --- test separator ---
+00000013  // [2B8] --- test separator ---
+00000313  // [2BC] T29: BNE taken setup
+00309463  // [2C0]   BNE x1,x3,+8 (taken)
+fff00313  // [2C4]   SKIPPED if taken
+00130313  // [2C8]   x6 = 0+1 = 1
+00000013  // [2CC]   nop (settle)
+06622a23  // [2D0]   -> DMEM[29]
+00000013  // [2D4] --- test separator ---
+00000013  // [2D8] --- test separator ---
+00000313  // [2DC] T30: BLT taken setup
+00114463  // [2E0]   BLT x2,x1,+8 (-1<5, taken)
+fff00313  // [2E4]   SKIPPED
+00130313  // [2E8]   x6 = 1
+00000013  // [2EC]   nop (settle)
+06622c23  // [2F0]   -> DMEM[30]
+00000013  // [2F4] --- test separator ---
+00000013  // [2F8] --- test separator ---
+00000313  // [2FC] T31: BGE taken setup
+0020d463  // [300]   BGE x1,x2,+8 (5>=-1, taken)
+fff00313  // [304]   SKIPPED
+00130313  // [308]   x6 = 1
+00000013  // [30C]   nop (settle)
+06622e23  // [310]   -> DMEM[31]
+00000013  // [314] --- test separator ---
+00000013  // [318] --- test separator ---
+00000313  // [31C] T32: BLTU taken setup
+0020e463  // [320]   BLTU x1,x2,+8 (5<MAX, taken)
+fff00313  // [324]   SKIPPED
+00130313  // [328]   x6 = 1
+00000013  // [32C]   nop (settle)
+08622023  // [330]   -> DMEM[32]
+00000013  // [334] --- test separator ---
+00000013  // [338] --- test separator ---
+00000313  // [33C] T33: BGEU taken setup
+00117463  // [340]   BGEU x2,x1,+8 (MAX>=5, taken)
+fff00313  // [344]   SKIPPED
+00130313  // [348]   x6 = 1
+00000013  // [34C]   nop (settle)
+08622223  // [350]   -> DMEM[33]
+00000013  // [354] --- test separator ---
+00000013  // [358] --- test separator ---
+00000313  // [35C] T34: BLT not-taken setup
+0020c463  // [360]   BLT x1,x2,+8 (5<-1? NO)
+00100313  // [364]   EXECUTED: x6=1
+00000013  // [368]   fall-through
+00000013  // [36C]   nop (settle)
+08622423  // [370]   -> DMEM[34]
+00000013  // [374] --- test separator ---
+00000013  // [378] --- test separator ---
+00000313  // [37C] T35: BLTU not-taken setup
+00116463  // [380]   BLTU x2,x1,+8 (MAX<5? NO)
+00100313  // [384]   EXECUTED: x6=1
+00000013  // [388]   fall-through
+00000013  // [38C]   nop (settle)
+08622623  // [390]   -> DMEM[35]
+00000013  // [394] --- test separator ---
+00000013  // [398] --- test separator ---
+0080036f  // [39C] T36: JAL x6,+8 (x6=PC+4=0x3A0)
+fff00313  // [3A0]   SKIPPED by JAL
+00000013  // [3A4]   nop (settle)
+08622823  // [3A8]   -> DMEM[36]
+00000013  // [3AC] --- test separator ---
+00000013  // [3B0] --- test separator ---
+00000513  // [3B4] T37: JALR flag=0
+00000013  // [3B8]   settle
+00000597  // [3BC]   x11 = PC = 0x3BC
+00000013  // [3C0]   settle
+00000013  // [3C4]   settle
+01058593  // [3C8]   x11 = PC + 16 (target = landing)
+00000013  // [3CC]   settle
+00000013  // [3D0]   settle
+00058367  // [3D4]   JALR x6, x11, 0
+fff00513  // [3D8]   SKIPPED by JALR
+00100513  // [3DC]   JALR lands here: x10=1
+00000013  // [3E0]   settle
+00000013  // [3E4]   nop (settle)
+08a22a23  // [3E8]   -> DMEM[37]
+00000013  // [3EC] --- test separator ---
+00000013  // [3F0] --- test separator ---
+06408013  // [3F4] T38: write to x0 (should be ignored)
+00000013  // [3F8]   settle
+00000333  // [3FC]   x6 = x0 + x0 = 0 (proves x0=0)
+00000013  // [400]   nop (settle)
+08622c23  // [404]   -> DMEM[38]
+00000013  // [408] --- test separator ---
+00000013  // [40C] --- test separator ---
+80000437  // [410] T39: x8 = 0x80000000
+00000013  // [414]   settle
+fff40413  // [418]   x8 = 0x7FFFFFFF (INT_MAX)
+00100393  // [41C]   x7 = 1
+00000013  // [420]   settle
+00000013  // [424]   settle
+00740333  // [428]   x6 = INT_MAX+1 = 0x80000000 (overflow)
+00000013  // [42C]   nop (settle)
+08622e23  // [430]   -> DMEM[39]
+00000013  // [434] --- test separator ---
+00000013  // [438] --- test separator ---
+00100393  // [43C] T40: x7 = 1
+00000013  // [440]   settle
+00000013  // [444]   settle
+40728333  // [448]   x6 = 0x80000000-1 = 0x7FFFFFFF (underflow)
+00000013  // [44C]   nop (settle)
+0a622023  // [450]   -> DMEM[40]
+00000013  // [454] --- test separator ---
+00000013  // [458] --- test separator ---
+00009313  // [45C] T41: SLLI x6 = 5<<0 = 5
+00000013  // [460]   nop (settle)
+0a622223  // [464]   -> DMEM[41]
+00000013  // [468] --- test separator ---
+00000013  // [46C] --- test separator ---
+00100513  // [470] T42: x10 = 1
+00000013  // [474]   settle
+01f51313  // [478]   SLLI x6 = 1<<31 = 0x80000000
+00000013  // [47C]   nop (settle)
+0a622423  // [480]   -> DMEM[42]
+00000013  // [484] --- test separator ---
+00000013  // [488] --- test separator ---
+4010d313  // [48C] T43: SRAI x6 = 5>>a1 = 2
+00000013  // [490]   nop (settle)
+0a622623  // [494]   -> DMEM[43]
+00000013  // [498] --- test separator ---
+00000013  // [49C] --- test separator ---
+00008333  // [4A0] T44: ADD x6 = 5+0 = 5
+00000013  // [4A4]   nop (settle)
+0a622823  // [4A8]   -> DMEM[44]
+00000013  // [4AC] --- test separator ---
+00000013  // [4B0] --- test separator ---
+40108333  // [4B4] T45: SUB x6 = 5-5 = 0
+00000013  // [4B8]   nop (settle)
+0a622a23  // [4BC]   -> DMEM[45]
+00000013  // [4C0] --- test separator ---
+00000013  // [4C4] --- test separator ---
+0010c333  // [4C8] T46: XOR x6 = 5^5 = 0
+00000013  // [4CC]   nop (settle)
+0a622c23  // [4D0]   -> DMEM[46]
+00000013  // [4D4] --- test separator ---
+00000013  // [4D8] --- test separator ---
+0010e333  // [4DC] T47: OR  x6 = 5|5 = 5
+00000013  // [4E0]   nop (settle)
+0a622e23  // [4E4]   -> DMEM[47]
+00000013  // [4E8] --- test separator ---
+00000013  // [4EC] --- test separator ---
+00103333  // [4F0] T48: SLTU x6 = (0<5)u = 1
+00000013  // [4F4]   nop (settle)
+0c622023  // [4F8]   -> DMEM[48]
+00000013  // [4FC] --- test separator ---
+00000013  // [500] --- test separator ---
+0010a333  // [504] T49: SLT x6 = (5<5)s = 0
+00000013  // [508]   nop (settle)
+0c622223  // [50C]   -> DMEM[49]
+00000013  // [510] --- test separator ---
+00000013  // [514] --- test separator ---
+0aa00313  // [518] T50: before FENCE
+0000000f  // [51C]   FENCE (NOP)
+00000013  // [520]   settle
+01130313  // [524]   after FENCE: x6 = 0xAA+0x11 = 0xBB
+00000013  // [528]   nop (settle)
+0c622423  // [52C]   -> DMEM[50]
+00000013  // [530] --- test separator ---
+00000013  // [534] --- test separator ---
+05500313  // [538] T51: before ECALL
+00000073  // [53C]   ECALL (NOP)
+00000013  // [540]   settle
+01130313  // [544]   after ECALL: x6 = 0x55+0x11 = 0x66
+00000013  // [548]   nop (settle)
+0c622623  // [54C]   -> DMEM[51]
+00000013  // [550] --- test separator ---
+00000013  // [554] --- test separator ---
+03300313  // [558] T52: before EBREAK
+00100073  // [55C]   EBREAK (NOP)
+00000013  // [560]   settle
+01130313  // [564]   after EBREAK: x6 = 0x33+0x11 = 0x44
+00000013  // [568]   nop (settle)
+0c622823  // [56C]   -> DMEM[52]
+00000013  // [570] --- test separator ---
+00000013  // [574] --- test separator ---
+02a00513  // [578] T53: RAW hazard x10=42
+00150513  // [57C]   RAW: x10 = 42+1 = 43
+00150513  // [580]   RAW: x10 = 43+1 = 44
+00150513  // [584]   RAW: x10 = 44+1 = 45
+00000013  // [588]   settle
+00050313  // [58C]   x6 = x10 = 45
+00000013  // [590]   nop (settle)
+0c622a23  // [594]   -> DMEM[53]
+00000013  // [598] --- test separator ---
+00000013  // [59C] --- test separator ---
+00500513  // [5A0] T54: x10 = 5 (data to store)
+00000013  // [5A4]   settle
+20a22023  // [5A8]   store 5 to DMEM[512]
+00000013  // [5AC]   settle stores
+00000013  // [5B0]   settle stores
+00000013  // [5B4]   settle stores
+20022503  // [5B8]   load x10 from DMEM[512] = 5
+00000013  // [5BC]   load-use stall gap
+00000013  // [5C0]   extra settle
+00a50313  // [5C4]   USE: x6 = 5+10 = 15 (load-use)
+00000013  // [5C8]   nop (settle)
+0c622c23  // [5CC]   -> DMEM[54]
+00000013  // [5D0] --- test separator ---
+00000013  // [5D4] --- test separator ---
+06400513  // [5D8] T55: setup x10=100
+0c800593  // [5DC]   setup x11=200
+00000013  // [5E0]   settle
+00000013  // [5E4]   settle
+00b50333  // [5E8]   x6 = 100+200 = 300 (both fwd)
+00000013  // [5EC]   nop (settle)
+0c622e23  // [5F0]   -> DMEM[55]
+00000013  // [5F4] --- test separator ---
+00000013  // [5F8] --- test separator ---
+00000513  // [5FC] T56: loop counter x10 = 0
+00300593  // [600]   loop limit x11 = 3
+00000013  // [604]   settle
+00150513  // [608]   loop_start: x10++
+feb51ee3  // [60C]   BNE x10,x11,-4 (back to loop_start)
+00000013  // [610]   post-loop settle
+00050313  // [614]   x6 = x10 = 3
+00000013  // [618]   nop (settle)
+0e622023  // [61C]   -> DMEM[56]
+00000013  // [620] --- test separator ---
+00000013  // [624] --- test separator ---
+fff00313  // [628] T57: ADDI x6 = -1 = 0xFFFFFFFF
+00000013  // [62C]   nop (settle)
+0e622223  // [630]   -> DMEM[57]
+00000013  // [634] --- test separator ---
+00000013  // [638] --- test separator ---
+fff02313  // [63C] T58: SLTI x6 = (0<-1)s = 0
+00000013  // [640]   nop (settle)
+0e622423  // [644]   -> DMEM[58]
+00000013  // [648] --- test separator ---
+00000013  // [64C] --- test separator ---
+00103313  // [650] T59: SLTIU x6 = (0<1)u = 1
+00000013  // [654]   nop (settle)
+0e622623  // [658]   -> DMEM[59]
+00000013  // [65C] --- test separator ---
+00000013  // [660] --- test separator ---
+200004b7  // [664] x9 = 0x20000000 (GPIO base)
+00000313  // [668] x6 = 0
+0cafe337  // [66C] x6 = 0x0CAFE000
+00000013  // [670] settle
+00c35313  // [674] x6 = 0x0000CAFE
+00000013  // [678] settle
+0064a223  // [67C] GPIO_DATA_OUT = 0xCAFE (completion signal)
+0000006f  // [680] END: infinite loop (JAL x0, 0)

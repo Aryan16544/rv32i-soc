@@ -1,0 +1,40 @@
+# Node dependencies
+ide/node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Vivado/Xilinx generated output
+.Xil/
+build/
+X232/
+*.jou
+*.log
+*.pb
+*.wdb
+*.wcfg
+*.str
+*.rpx
+*.wdf
+*.wpc
+*.rlx
+*.sdb
+*.vdi
+*.vds
+*.dcp
+*.bit
+*.ltx
+
+# Local snapshot/backup content that should not ship as the main source tree
+rtl-20260206T100622Z-1-001/
+
+# Legacy duplicate RTL wrappers not used by the active SoC build
+soc/soc_boot_rom.v
+soc/soc_ram.v
+soc/fpga_top_uart_test.v
+
+# Compiled software artifacts
+soc/software/*.elf
+soc/software/*.bin
+
