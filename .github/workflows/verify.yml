@@ -28,4 +28,4 @@ jobs:
     - name: Verify Full SoC Testbench Compilation
       run: |
         echo "Compiling full SoC verification testbench..."
-        iverilog -g2012 -o soc_tb_check -I core -I soc -I peripherals -I . rv32i_soc_full_tb.v core/*.v soc/*.v peripherals/*.v
+        iverilog -g2012 -o soc_tb_check -I core -I soc -I peripherals -I . .github/verify/xilinx_stubs.v rv32i_soc_full_tb.v core/*.v soc/*.v peripherals/*.v
